@@ -1,18 +1,40 @@
 #cloud-config
+package_update: true
 
-# Atualiza a lista de pacotes antes das instalações
+users:
+  - default
+  - name: meu-usuario
+    gecos: Usuario administrador do laboratorio
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: 'ALL=(ALL) NOPASSWD:ALL'
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8ln45QBUHVB68/3veKJGmAK0M9YmPHNgVMG+lmIcpH meu-usuario@cloud-init-lab
 
+packages:
+  - docker.io
+  - nginx
 
-# Cria um usuário administrador
+write_files:
+  - path: /var/www/html/index.html
+    owner: root:root
+    permissions: '0644'
+    content: |
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Laboratório Cloud-Init</title>
+        <style>body{font-family:Arial,sans-serif;background:#f0f5fb;color:#17324d;margin:0;padding:12vh 1.5rem;text-align:center}main{max-width:720px;margin:auto;background:white;border-radius:16px;padding:3rem;box-shadow:0 8px 30px #18365420}h1{color:#0875ba}</style>
+      </head>
+      <body><main><h1>Laboratório Cloud-Init</h1><p>Ambiente provisionado com Docker e Nginx.</p><p>Servidor DevOps configurado automaticamente.</p></main></body>
+      </html>
 
+runcmd:
+  - [systemctl, enable, --now, nginx]
+  - [systemctl, enable, --now, docker]
+  - [usermod, -aG, docker, meu-usuario]
 
-# Instala os softwares declarativamente
-
-
-# Cria uma página personalizada
-
-
-# Executa comandos após as etapas de configuração
-
-
-# Mensagem final registrada nos logs
+final_message: 'Cloud-Init finalizou o provisionamento do laboratorio em $UPTIME segundos. Verifique o status e os servicos.'
