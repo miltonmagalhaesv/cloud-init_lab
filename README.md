@@ -37,3 +37,7 @@ Confirme que o status é `done`, que não há erros no resultado e nos logs, que
 Salve em `evidencias/` capturas reais do terminal com o Cloud-Init, usuário e serviços, e do navegador com a página e URL. Não foram geradas capturas nesta máquina: o VirtualBox não estava instalado e a box original pode não suportar Apple Silicon.
 
 Não inclua chaves privadas, a pasta `.vagrant` ou discos da VM. Após alterar o `user-data`, recrie a VM apenas se for seguro apagar seus dados, ou siga o procedimento apropriado de limpeza e reinicialização do Cloud-Init.
+
+## Alternativa para Apple Silicon (ainda não validada)
+
+O arquivo `Vagrantfile.arm64` é uma adaptação para Macs com Apple Silicon, usando a box `bento/ubuntu-22.04` ARM64. A importação da imagem foi iniciada, mas a VM ainda não foi testada até o fim: houve conflito de portas e falta de espaço. Para usá-lo, execute `VAGRANT_VAGRANTFILE=Vagrantfile.arm64 vagrant up` e siga as verificações acima. O `Vagrantfile` original foi preservado.
